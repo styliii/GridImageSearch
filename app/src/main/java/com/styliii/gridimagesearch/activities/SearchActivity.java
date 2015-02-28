@@ -50,7 +50,7 @@ public class SearchActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchActivity.this, ImageDisplayActivity.class);
                 ImageResult result = imageResults.get(position);
-                intent.putExtra("url", result.fullUrl);
+                intent.putExtra("result", result);
                 startActivity(intent);
             }
         });

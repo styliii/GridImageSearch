@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.styliii.gridimagesearch.R;
+import com.styliii.gridimagesearch.models.ImageResult;
 
 
 public class ImageDisplayActivity extends ActionBarActivity {
@@ -16,9 +17,10 @@ public class ImageDisplayActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_display);
-        String url = getIntent().getStringExtra("url");
+        getSupportActionBar().hide();
+        ImageResult imageResult = (ImageResult) getIntent().getSerializableExtra("result");
         ImageView ivImageResult = (ImageView) findViewById(R.id.ivImageResult);
-        Picasso.with(this).load(url).into(ivImageResult);
+        Picasso.with(this).load(imageResult.fullUrl).into(ivImageResult);
     }
 
 

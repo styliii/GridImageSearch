@@ -4,12 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by liouyang on 2/27/15.
  */
-public class ImageResult {
+public class ImageResult implements Serializable {
     public String fullUrl;
     public String title;
     public String thumbUrl;
