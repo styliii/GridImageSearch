@@ -18,6 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ImageDisplayActivity"
+            android:label="@string/title_activity_image_display"
+            android:parentActivityName=".activities.SearchActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.styliii.gridimagesearch.activities.SearchActivity" />
+        </activity>
     </application>
 
 </manifest>

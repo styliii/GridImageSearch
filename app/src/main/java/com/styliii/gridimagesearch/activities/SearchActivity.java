@@ -1,11 +1,14 @@
 package com.styliii.gridimagesearch.activities;
 
+import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 
@@ -42,6 +45,15 @@ public class SearchActivity extends ActionBarActivity {
     private void setupViews() {
         etQuery = (EditText) findViewById(R.id.etQuery);
         gvResults = (GridView) findViewById(R.id.gvResults);
+        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SearchActivity.this, ImageDisplayActivity.class);
+                ImageResult result = imageResults.get(position);
+                intent.putExtra("url", result.fullUrl);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -67,7 +79,6 @@ public class SearchActivity extends ActionBarActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.i("info", imageResults.toString());
             }
         });
 
