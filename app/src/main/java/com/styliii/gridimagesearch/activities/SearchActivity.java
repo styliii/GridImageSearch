@@ -12,6 +12,7 @@ import android.widget.GridView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.styliii.gridimagesearch.R;
+import com.styliii.gridimagesearch.adapters.ImageResultsAdapter;
 import com.styliii.gridimagesearch.models.ImageResult;
 
 import org.apache.http.Header;
@@ -26,6 +27,7 @@ public class SearchActivity extends ActionBarActivity {
     private EditText etQuery;
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
+    private ImageResultsAdapter aImageResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,8 @@ public class SearchActivity extends ActionBarActivity {
         setContentView(R.layout.activity_search);
         setupViews();
         imageResults = new ArrayList<ImageResult>();
-
+        aImageResults = new ImageResultsAdapter(this, imageResults);
+        gvResults.setAdapter(aImageResults);
     }
 
     private void setupViews() {
@@ -51,7 +54,6 @@ public class SearchActivity extends ActionBarActivity {
     public void onImageSearch(View v) {
         String query = etQuery.getText().toString();
         AsyncHttpClient client = new AsyncHttpClient();
-// https://ajax.googleapis.com/ajax/services/search/images?q=beer&v=1.0&rsz=8
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?q=" + query + "&v=1.0&rsz=8";
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
@@ -61,10 +63,11 @@ public class SearchActivity extends ActionBarActivity {
                 try {
                     imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
                     imageResults.clear();
-                    imageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
+                    aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Log.i("info", imageResults.toString());
             }
         });
 
