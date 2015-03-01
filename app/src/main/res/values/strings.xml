@@ -7,5 +7,12 @@
     <string name="search_prompt">Enter Search Query</string>
     <string name="save_label">Search</string>
     <string name="title_activity_image_display">ImageDisplayActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="settings_title">Advanced Filters</string>
+    <string name="image_size">Image Size</string>
+    <string name="color_filter">Color Filter</string>
+    <string name="image_type">Image Type</string>
+    <string name="site_filter">Site Filter</string>
+    <string name="save">save</string>
 
 </resources>
