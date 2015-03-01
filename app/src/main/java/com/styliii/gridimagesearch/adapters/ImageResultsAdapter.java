@@ -37,4 +37,5 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult> {
         Picasso.with(getContext()).load(imageInfo.thumbUrl).into(ivImage);
         return convertView;
     }
+
 }

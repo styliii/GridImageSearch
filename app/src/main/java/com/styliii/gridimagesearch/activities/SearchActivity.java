@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.styliii.gridimagesearch.EndlessScrollListener;
 import com.styliii.gridimagesearch.R;
 import com.styliii.gridimagesearch.adapters.ImageResultsAdapter;
 import com.styliii.gridimagesearch.models.ImageResult;
@@ -45,6 +46,12 @@ public class SearchActivity extends ActionBarActivity {
         imageResults = new ArrayList<ImageResult>();
         aImageResults = new ImageResultsAdapter(this, imageResults);
         gvResults.setAdapter(aImageResults);
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                customLoadMoreDataFromAPI(page);
+            }
+        });
         settingsQuery = "";
     }
 
@@ -128,5 +135,24 @@ public class SearchActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void customLoadMoreDataFromAPI(int offset) {
+        String query = etQuery.getText().toString();
+        AsyncHttpClient client = new AsyncHttpClient();
+        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?q=" + query
+                + "&v=1.0&rsz=8" + settingsQuery + "&start=" + offset;
+        client.get(searchUrl, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONArray imageResultsJson  = null;
+                try {
+                    imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
+                    aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
