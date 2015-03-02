@@ -54,7 +54,7 @@ public class SearchActivity extends ActionBarActivity {
         gvResults.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                customLoadMoreDataFromAPI(page * 8);
+                customLoadMoreDataFromAPI(totalItemsCount);
             }
         });
     }
@@ -102,7 +102,7 @@ public class SearchActivity extends ActionBarActivity {
                 JSONArray imageResultsJson  = null;
                 try {
                     imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
-                    imageResults.clear();
+                    aImageResults.clear();
                     aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
                 } catch (JSONException e) {
                     e.printStackTrace();
