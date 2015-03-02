@@ -52,7 +52,7 @@ public class SearchActivity extends ActionBarActivity {
         gvResults.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                customLoadMoreDataFromAPI(page);
+                customLoadMoreDataFromAPI(page * 8);
             }
         });
     }
