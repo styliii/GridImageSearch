@@ -1,11 +1,13 @@
 package com.styliii.gridimagesearch.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,7 +85,6 @@ public class SearchActivity extends ActionBarActivity {
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("Debug", response.toString());
                 JSONArray imageResultsJson  = null;
                 try {
                     imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
@@ -93,6 +94,14 @@ public class SearchActivity extends ActionBarActivity {
                     e.printStackTrace();
                 }
             }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                if (isNetworkAvailable()) {
+                    Toast.makeText(SearchActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SearchActivity.this, "No internet connection", Toast.LENGTH_LONG).show();
+                }
+             }
         });
 
     }
@@ -153,6 +162,22 @@ public class SearchActivity extends ActionBarActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                if (isNetworkAvailable()) {
+                    Toast.makeText(SearchActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SearchActivity.this, "No internet connection", Toast.LENGTH_LONG).show();
+                }
+            }
         });
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }
