@@ -45,6 +45,7 @@ public class SearchActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         setupViews();
+        setupSettings();
         imageResults = new ArrayList<ImageResult>();
         aImageResults = new ImageResultsAdapter(this, imageResults);
         gvResults.setAdapter(aImageResults);
@@ -54,7 +55,6 @@ public class SearchActivity extends ActionBarActivity {
                 customLoadMoreDataFromAPI(page);
             }
         });
-        settingsQuery = "";
     }
 
     private void setupViews() {
@@ -115,13 +115,7 @@ public class SearchActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FORM_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                SharedPreferences pref =
-                        PreferenceManager.getDefaultSharedPreferences(this);
-                String imgsz = pref.getString("imgsz", "");
-                String imgcolor = pref.getString("imgcolor", "");
-                String imgtype = pref.getString("imgtype", "");
-                String site = pref.getString("site", "");
-                settingsQuery = "&imgsz=" + imgsz + "&imgcolor=" + imgcolor + "&imgtype=" + imgtype + "&as_sitesearch=" + site;
+                setupSettings();
                 Toast.makeText(this, settingsQuery, Toast.LENGTH_LONG).show();
             }
         }
@@ -172,6 +166,16 @@ public class SearchActivity extends ActionBarActivity {
                 }
             }
         });
+    }
+
+    private void setupSettings() {
+        SharedPreferences pref =
+                        PreferenceManager.getDefaultSharedPreferences(this);
+        String imgsz = pref.getString("imgsz", "");
+        String imgcolor = pref.getString("imgcolor", "");
+        String imgtype = pref.getString("imgtype", "");
+        String site = pref.getString("site", "");
+        settingsQuery = "&imgsz=" + imgsz + "&imgcolor=" + imgcolor + "&imgtype=" + imgtype + "&as_sitesearch=" + site;
     }
 
     private Boolean isNetworkAvailable() {
