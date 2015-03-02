@@ -7,12 +7,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -30,13 +31,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static android.support.v7.widget.SearchView.OnQueryTextListener;
+
 
 public class SearchActivity extends ActionBarActivity {
-    private EditText etQuery;
+    private SearchView svQuery;
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
     private ImageResultsAdapter aImageResults;
-    private final int REQUEST_CODE = 20;
     public static final int FORM_REQUEST_CODE = 23;
     private String settingsQuery;
 
@@ -58,7 +60,6 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     private void setupViews() {
-        etQuery = (EditText) findViewById(R.id.etQuery);
         gvResults = (GridView) findViewById(R.id.gvResults);
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -75,11 +76,24 @@ public class SearchActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        svQuery = (SearchView) MenuItemCompat.getActionView(searchItem);
+        svQuery.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                imageSearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
-    public void onImageSearch(View v) {
-        String query = etQuery.getText().toString();
+    public void imageSearch(String query) {
         AsyncHttpClient client = new AsyncHttpClient();
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?q=" + query + "&v=1.0&rsz=8" + settingsQuery;
         client.get(searchUrl, new JsonHttpResponseHandler() {
@@ -116,7 +130,6 @@ public class SearchActivity extends ActionBarActivity {
         if (requestCode == FORM_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 setupSettings();
-                Toast.makeText(this, settingsQuery, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -141,14 +154,14 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     public void customLoadMoreDataFromAPI(int offset) {
-        String query = etQuery.getText().toString();
+        String query = svQuery.getQuery().toString();
         AsyncHttpClient client = new AsyncHttpClient();
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?q=" + query
                 + "&v=1.0&rsz=8" + settingsQuery + "&start=" + offset;
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray imageResultsJson  = null;
+                JSONArray imageResultsJson = null;
                 try {
                     imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
                     aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
