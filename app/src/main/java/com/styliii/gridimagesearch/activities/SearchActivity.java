@@ -14,9 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
+import com.etsy.android.grid.StaggeredGridView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.styliii.gridimagesearch.EndlessScrollListener;
@@ -36,7 +36,7 @@ import static android.support.v7.widget.SearchView.OnQueryTextListener;
 
 public class SearchActivity extends ActionBarActivity {
     private SearchView svQuery;
-    private GridView gvResults;
+    private StaggeredGridView gvResults;
     private ArrayList<ImageResult> imageResults;
     private ImageResultsAdapter aImageResults;
     public static final int FORM_REQUEST_CODE = 23;
@@ -60,7 +60,7 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     private void setupViews() {
-        gvResults = (GridView) findViewById(R.id.gvResults);
+        gvResults = (StaggeredGridView) findViewById(R.id.gvResults);
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -158,6 +158,7 @@ public class SearchActivity extends ActionBarActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?q=" + query
                 + "&v=1.0&rsz=8" + settingsQuery + "&start=" + offset;
+        Toast.makeText(this, searchUrl, Toast.LENGTH_LONG).show();
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
