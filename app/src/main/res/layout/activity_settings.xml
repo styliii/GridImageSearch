@@ -85,9 +85,10 @@
         android:entries="@array/image_type_array"
         android:layout_below="@+id/tvColorFilter"
         android:layout_toRightOf="@+id/tvImageType"
-        android:layout_toEndOf="@+id/tvImageType"
         android:spinnerMode="dropdown"
-        android:gravity="center_vertical|right|end" />
+        android:gravity="center_vertical|right|end"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -95,10 +96,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/site_filter"
         android:id="@+id/tvSiteFilter"
-        android:gravity="bottom"
         android:layout_below="@id/tvImageType"
         android:layout_alignLeft="@id/tvImageType"
-        android:layout_alignStart="@id/tvImageType" />
+        android:layout_alignStart="@id/tvImageType"
+        android:layout_alignBottom="@+id/etSiteFilter"
+        android:gravity="center_vertical" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -107,7 +109,8 @@
         android:layout_below="@id/spImageType"
         android:layout_toRightOf="@id/tvSiteFilter"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:gravity="right|end" />
 
     <Button
         android:layout_width="wrap_content"

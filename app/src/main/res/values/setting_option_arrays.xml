@@ -5,7 +5,7 @@
         <item>small</item>
         <item>medium</item>
         <item>large</item>
-        <item>extra-Large</item>
+        <item>extra-large</item>
     </string-array>
     <string-array name="color_filter_array">
         <item></item>

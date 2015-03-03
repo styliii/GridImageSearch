@@ -89,15 +89,15 @@ public class SettingsActivity extends ActionBarActivity {
 
     private void setupAdapters() {
         imageSizeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.image_size_array, android.R.layout.simple_spinner_item);
+                R.array.image_size_array, R.layout.spinner_item);
         spImageSize.setAdapter(imageSizeAdapter);
 
         imageTypeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.image_type_array, android.R.layout.simple_spinner_item);
+                R.array.image_type_array, R.layout.spinner_item);
         spImageType.setAdapter(imageTypeAdapter);
 
         colorFilterAdapter = ArrayAdapter.createFromResource(this,
-                R.array.color_filter_array, android.R.layout.simple_spinner_item);
+                R.array.color_filter_array, R.layout.spinner_item);
         spColorFilter.setAdapter(colorFilterAdapter);
     }
 
