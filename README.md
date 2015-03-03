@@ -22,6 +22,9 @@ Completed User Stories
 Time Spent: 15 hours
 
 ## Walkthrough
+![app demo](./StaggeredGridView_demo.gif)
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/)
 
 ## Libraries
 - [Android AsyncHTTPClient](http://loopj.com/android-async-http/) - For asynchronous network requests
