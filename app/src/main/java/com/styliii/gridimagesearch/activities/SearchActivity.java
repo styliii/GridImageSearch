@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.etsy.android.grid.StaggeredGridView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.styliii.gridimagesearch.EditSettingsDialog;
 import com.styliii.gridimagesearch.EndlessScrollListener;
 import com.styliii.gridimagesearch.R;
 import com.styliii.gridimagesearch.adapters.ImageResultsAdapter;
@@ -95,6 +97,7 @@ public class SearchActivity extends ActionBarActivity {
 
     public void imageSearch(String query) {
         AsyncHttpClient client = new AsyncHttpClient();
+        setupSettings();
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?q=" + query + "&v=1.0&rsz=8" + settingsQuery;
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
@@ -120,11 +123,6 @@ public class SearchActivity extends ActionBarActivity {
 
     }
 
-    public void onSettings() {
-        Intent i = new Intent(SearchActivity.this, SettingsActivity.class);
-        startActivityForResult(i, FORM_REQUEST_CODE);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FORM_REQUEST_CODE) {
@@ -141,7 +139,10 @@ public class SearchActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            onSettings();
+            FragmentManager manager = getSupportFragmentManager();
+            EditSettingsDialog editSettingsDialog = EditSettingsDialog.newInstance();
+            editSettingsDialog.show(manager, "settingsDialog");
+//            onSettings();
             return true;
         }
 
@@ -156,6 +157,7 @@ public class SearchActivity extends ActionBarActivity {
     public void customLoadMoreDataFromAPI(int offset) {
         String query = svQuery.getQuery().toString();
         AsyncHttpClient client = new AsyncHttpClient();
+        setupSettings();
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?q=" + query
                 + "&v=1.0&rsz=8" + settingsQuery + "&start=" + offset;
         client.get(searchUrl, new JsonHttpResponseHandler() {
